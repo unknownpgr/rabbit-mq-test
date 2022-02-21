@@ -1,5 +1,3 @@
-from flask import Flask
-from flask import request
 import pika
 import time
 import json
@@ -16,14 +14,14 @@ while True:
         pass
 
 def callback(ch, method, properties, body):
-    json_body = json.loads(body)
-    a = json_body['a']
-    b = json_body['b']
-    q= json_body['q']
 
-    # Suppose that we do some cpu-bound, time-consuming task.
-    time.sleep(10)
+    json_body = json.loads(body)
+    q = json_body['q']
     try:
+        a = json_body['a']
+        b = json_body['b']
+        # Suppose that we do some cpu-bound, time-consuming task.
+        time.sleep(10)
         response = str(int(a)+int(b))
     except:
         response ='err'
