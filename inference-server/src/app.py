@@ -14,7 +14,7 @@ while True:
         pass
 
 def callback(ch, method, properties, body):
-
+    print(body,flush=True)
     json_body = json.loads(body)
     q = json_body['q']
     try:
