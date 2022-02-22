@@ -4,7 +4,7 @@ WORKDIR /app
 COPY src/package.json ./
 COPY src/yarn.lock ./
 RUN yarn install
-RUN tsc
 COPY src ./
+RUN yarn tsc
 
 ENTRYPOINT [ "node", "index.js" ]

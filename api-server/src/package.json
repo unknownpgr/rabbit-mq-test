@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "type": "module",
   "dependencies": {
     "@types/amqplib": "^0.8.2",
     "@types/express": "^4.17.13",

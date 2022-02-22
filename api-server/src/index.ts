@@ -1,23 +1,24 @@
-import amqp, { Channel, Connection } from "amqplib";
-import express from "express";
-import uuid from "uuid";
+import * as amqp from "amqplib";
+import * as express from "express";
+import * as uuid from "uuid";
 
 async function wait(sec: number = 1) {
   return new Promise((resolve) => setTimeout(resolve, sec));
 }
 
-async function consume(channel: Channel, queue: string) {
+async function consume(channel: amqp.Channel, queue: string) {
   return new Promise((resolve, reject) => {
     try {
       channel.consume(queue, (msg) => resolve(msg.content.toString()));
     } catch (e) {
+      console.log("Retry...");
       reject(e);
     }
   });
 }
 
 async function main() {
-  let connection: Connection;
+  let connection: amqp.Connection;
   while (true) {
     try {
       await wait();
@@ -31,7 +32,7 @@ async function main() {
   const app = express();
 
   app.get("/", async (req, res) => {
-    const channel: Channel = await connection.createChannel();
+    const channel: amqp.Channel = await connection.createChannel();
     await channel.assertQueue(sendQueue, { durable: false });
     const receiveQueue: string = uuid.v4();
     const msg = JSON.stringify({
